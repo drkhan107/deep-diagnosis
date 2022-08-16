@@ -343,7 +343,7 @@ def main(opt,model,labels):
     if not uploaded_file:
         file_name = "test.jpg"
         st.write("Upload apple leaf image to detect diseases")
-        st.image("test.jpg", caption='Sample Image')
+        st.image("test.jpg", caption='Sample Image',width=400)
 	
     else:
         file_name = uploaded_file.name
@@ -356,7 +356,7 @@ def main(opt,model,labels):
             f.write((uploaded_file).getbuffer())
         
         img = Image.open(uploaded_file)
-        img = transforms.Resize((150,150))(img)
+        img = transforms.Resize((280,280))(img)
         img = transforms.ToTensor()(img)
         img = img.unsqueeze(0).to(device)
         res=classify(model,img)
@@ -364,9 +364,9 @@ def main(opt,model,labels):
         sc=res[0]
         st.write(lb+" "+str(sc))
         if(lb!="demaged" and lb!="healthy"):
-            if(sc>25):
+            if(sc>16):
                 final_result = run(weights,file_name)
-                st.image(final_result, caption='Diseases Detected')	
+                st.image(final_result, caption='Diseases Detected', width=400)	
             else:
                 st.write("Try Some other image")	
         else:
