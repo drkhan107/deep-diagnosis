@@ -385,9 +385,9 @@ if __name__ == "__main__":
     
     labels=[]
     with open("labels.txt") as file:
-    for line in file: 
-        line = line.strip() #or some other preprocessing
-        labels.append(line) #st
+        for line in file: 
+           line = line.strip() #or some other preprocessing
+           labels.append(line) #st
     main(opt,model,labels)
 	
 	
