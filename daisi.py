@@ -362,15 +362,15 @@ def main(opt,model,labels):
         res=classify(model,img)
         lb=labels[res[1]]
         sc=res[1]
-        st.write(res)
-        if(lb!="demaged" or lb!="healthy"):
+        st.write(lb+" "+str(score))
+        if(lb!="demaged" and lb!="healthy"):
             if(sc>25):
                 final_result = run(weights,file_name)
                 st.image(final_result, caption='Diseases Detected')	
             else:
-                st.write("Try Some othr image")	
+                st.write("Try Some other image")	
         else:
-                st.write("Try Some othr image")				
+                st.write("No disease found")				
 		#final_result = run(weights,file_name)
         #st.image(final_result, caption='Diseases Detected')
 
