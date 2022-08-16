@@ -1,0 +1,5 @@
+train: ../apple/train/images
+val: ../apple/valid/images
+
+nc: 7
+names: ['alternaria', 'insect', 'mlb', 'mossaic', 'necrosis', 'pwm', 'scab']

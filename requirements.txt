@@ -1,0 +1,15 @@
+opencv_python
+torchvision
+torch
+numpy
+thop
+streamlit # for app
+pycocotools
+tqdm
+addict
+Pillow
+PyYAML
+tools
+seaborn
+pandas
+tensorflow

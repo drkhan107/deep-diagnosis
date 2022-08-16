@@ -1,0 +1,10 @@
+alternaria
+demaged
+healthy
+insect
+mlb
+mossaic
+multiple
+necrosis
+powdery-mildew
+scab
