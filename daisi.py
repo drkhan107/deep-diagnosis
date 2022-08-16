@@ -316,7 +316,7 @@ def classify(model,img):
     return sc[0].item(),preds[0].item()
     
 
-def main(opt,model):
+def main(opt,model,labels):
     #check_requirements(exclude=('tensorboard', 'thop'))
     #run(**vars(opt))
 	
@@ -360,7 +360,17 @@ def main(opt,model):
         img = transforms.ToTensor()(img)
         img = img.unsqueeze(0).to(device)
         res=classify(model,img)
+        lb=labels[res[1]]
+        sc=res[1]
         st.write(res)
+        if(lb!="demaged" or lb!="healthy"):
+            if(sc>25):
+                final_result = run(weights,file_name)
+                st.image(final_result, caption='Diseases Detected')	
+            else:
+                st.write("Try Some othr image")	
+        else:
+                st.write("Try Some othr image")				
 		#final_result = run(weights,file_name)
         #st.image(final_result, caption='Diseases Detected')
 
@@ -372,7 +382,14 @@ if __name__ == "__main__":
     model=NaturalSceneClassification()
     model=torch.load("mobilenetv2-apple-10-class-pytorch.pth",map_location=device )
     model.eval()
-    main(opt,model)
+    
+    labels=[]
+    with open("labels.txt") as file:
+    for line in file: 
+        line = line.strip() #or some other preprocessing
+        labels.append(line) #st
+    main(opt,model,labels)
+	
 	
 	
 	
