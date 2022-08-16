@@ -273,6 +273,7 @@ def run(
         LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
     if update:
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
+    im0 = cv2.cvtColor(im0, cv2.COLOR_BGR2RGB)
     return im0
 
 
@@ -366,7 +367,6 @@ def main(opt,model,labels):
         if(lb!="demaged" and lb!="healthy"):
             if(sc>16):
                 final_result = run(weights,file_name)
-                final_result=Image.fromarray(final_result, 'RGB')
                 st.image(final_result, caption='Diseases Detected', width=400)
 
             else:
