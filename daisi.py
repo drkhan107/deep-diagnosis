@@ -351,12 +351,12 @@ def main(opt,model,labels):
         #image = np.array(Image.open(image_file_buffer))
 	    #Saving upload
         file_details = {"filename":uploaded_file.name, "filetype":uploaded_file.type,"filesize":uploaded_file.size}
-        st.write(file_details)
+        #st.write(file_details)
         with open(file_name,"wb") as f:
             f.write((uploaded_file).getbuffer())
         
         img = Image.open(uploaded_file)
-        img = transforms.Resize((280,280))(img)
+        img = transforms.Resize((360,360))(img)
         img = transforms.ToTensor()(img)
         img = img.unsqueeze(0).to(device)
         res=classify(model,img)
