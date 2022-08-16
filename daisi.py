@@ -366,9 +366,8 @@ def main(opt,model,labels):
         if(lb!="demaged" and lb!="healthy"):
             if(sc>16):
                 final_result = run(weights,file_name)
-                R, G, B = final_result.split()
-                new_image = PIL.Image.merge("RGB", (B, G, R))
-                st.image(new_image, caption='Diseases Detected', width=400)
+                final_result=Image.fromarray(final_result, 'RGB')
+                st.image(final_result, caption='Diseases Detected', width=400)
 
             else:
                 st.write("Try Some other image")	
