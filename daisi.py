@@ -362,7 +362,7 @@ def main(opt,model,labels):
         res=classify(model,img)
         lb=labels[res[1]]
         sc=res[1]
-        st.write(lb+" "+str(score))
+        st.write(lb+" "+str(sc))
         if(lb!="demaged" and lb!="healthy"):
             if(sc>25):
                 final_result = run(weights,file_name)
