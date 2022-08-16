@@ -361,7 +361,7 @@ def main(opt,model,labels):
         img = img.unsqueeze(0).to(device)
         res=classify(model,img)
         lb=labels[res[1]]
-        sc=res[1]
+        sc=res[0]
         st.write(lb+" "+str(sc))
         if(lb!="demaged" and lb!="healthy"):
             if(sc>25):
