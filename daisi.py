@@ -364,15 +364,20 @@ def main(opt,model,labels):
         lb=labels[res[1]]
         sc=res[0]
         st.write(lb+" "+str(sc))
-        if(lb!="demaged" and lb!="healthy"):
-            if(sc>16):
+        if(lb=="noleaf"):
+            st.write("Invalid image! Try Some other image")
+        elif(lb=="healthy"):
+            st.write("Looks healthy to me")
+        elif(lb=="demaged"):
+            st.write("No recognizable disease found")
+        else:
+            if(sc>7):
                 final_result = run(weights,file_name)
                 st.image(final_result, caption='Diseases Detected', width=400)
 
             else:
-                st.write("Try Some other image")	
-        else:
-                st.write("No disease found")				
+                st.write("No disease detected")	
+        				
 		#final_result = run(weights,file_name)
         #st.image(final_result, caption='Diseases Detected')
 
