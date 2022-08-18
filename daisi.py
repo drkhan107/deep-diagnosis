@@ -317,7 +317,7 @@ def main(opt,model,labels):
         return_types = st.multiselect("Select Return Type", ["Image", "Labels"], ["Image", "Labels"])
     
     if not uploaded_file:
-        file_name = "test.jpg"
+        file_name = "sample.jpg"
         st.write("Upload apple leaf image to detect diseases")
         st.image("test.jpg", caption='Sample Image',width=400)
 	
