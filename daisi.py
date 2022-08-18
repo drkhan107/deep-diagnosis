@@ -319,7 +319,7 @@ def main(opt,model,labels):
     if not uploaded_file:
         file_name = "sample.jpg"
         st.write("Upload apple leaf image to detect diseases")
-        st.image("test.jpg", caption='Sample Image',width=400)
+        st.image("sample.jpg", caption='Sample Image',width=400)
 	
     else:
         file_name = uploaded_file.name
