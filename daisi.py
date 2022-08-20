@@ -300,7 +300,7 @@ def main(opt,model,labels):
     st.write("By: Dr. Asif Iqbal Khan")
     st.markdown(
         """
-            This daisi allows you to detect different apple diseases from leaf images. 
+            This app allows you to detect different apple diseases from leaf images. 
             1) Scab
             2) Alternaria
             3) MLB
@@ -309,8 +309,9 @@ def main(opt,model,labels):
             6) Necrosis		
         """
     )
+    st.write("Link to the research paper: <a href='https://www.sciencedirect.com/science/article/abs/pii/S0168169922004100'> Deep diagnosis: A real-time apple leaf disease detection system based on deep learning</a>")
 
-    st.write("This Daisi allows you to provide an image, and one of the most advanced Object Detection algorithms available will try to classify it for you. Upload your data to get started!")
+    st.write("This app allows you to provide an image, and one of the most advanced Object Detection algorithms available will try to classify it for you. Upload your data to get started!")
     
     with st.sidebar:
         uploaded_file = st.file_uploader("Choose an Image", type=["png","jpg","jpeg"])
