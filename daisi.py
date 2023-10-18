@@ -77,7 +77,35 @@ class NaturalSceneClassification(nn.Module):
 
 			
 			
+def increase_contrast(image):
+    if isinstance(image, Image.Image):
+        # Convert the PIL image to a numpy array
+        image = np.array(image)
 
+    if not isinstance(image, np.ndarray):
+        raise ValueError("Input must be a valid numpy array")
+
+    # Convert the image to grayscale if it's in color
+    if len(image.shape) == 3:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Calculate min and max values
+    min_val = image.min()
+    max_val = image.max()
+
+    if min_val == max_val:
+        return image  # Avoid division by zero
+
+    # Apply contrast stretching
+    contrast_stretched = cv2.convertScaleAbs(image, alpha=255.0 / (max_val - min_val), beta=-min_val)
+
+    return contrast_stretched
+
+def reduce_noise(image, kernel_size=(3, 3)):
+    # Apply Gaussian blur to reduce noise
+    blurred = cv2.GaussianBlur(image, kernel_size, 0)
+
+    return blurred
 @torch.no_grad()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
@@ -153,13 +181,17 @@ def run(
             im = im[None]  # expand for batch dim
         t2 = time_sync()
         dt[0] += t2 - t1
+         # Contrast enhancement
+        # im = increase_contrast(im)
 
+        # # Noise reduction
+        # im = reduce_noise(im)
         # Inference
         visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
         pred = model(im, augment=augment, visualize=visualize)
         t3 = time_sync()
         dt[1] += t3 - t2
-
+       
         # NMS
         pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
         dt[2] += time_sync() - t3
@@ -295,9 +327,9 @@ def classify(model,img):
 def main(opt,model,labels):
     #check_requirements(exclude=('tensorboard', 'thop'))
     #run(**vars(opt))
-	
+    st.image("logo.jpg", caption="")
     st.title("#Welcome to Deep Diagnosis")
-    st.write("By: Dr. Asif Iqbal Khan")
+    # st.write("By: Dr. Asif Iqbal Khan")
     st.markdown(
         """
             This app allows you to detect different apple diseases from leaf images. 
@@ -315,9 +347,10 @@ def main(opt,model,labels):
     st.write("This app allows you to provide an image, and one of the most advanced Object Detection algorithms available will try to classify it for you. Upload your data to get started!")
     
     with st.sidebar:
+        # st.image("logo.jpg", caption="")
         uploaded_file = st.file_uploader("Choose an Image", type=["png","jpg","jpeg"])
         return_types = st.multiselect("Select Return Type", ["Image", "Labels"], ["Image", "Labels"])
-    
+        
     if not uploaded_file:
         file_name = "sample.jpg"
         st.write("Upload apple leaf image to detect diseases")
@@ -334,10 +367,25 @@ def main(opt,model,labels):
             f.write((uploaded_file).getbuffer())
         
         img = Image.open(uploaded_file)
+        if img.format.lower() != "jpeg" or img.format.lower() !="jpg" :
+        # Convert the image to RGB format (JPEG-compatible) and save as a temporary JPEG file
+            img = img.convert("RGB")
+            temp_jpeg_file = "temp_image.jpg"
+            img.save(temp_jpeg_file, "JPEG")
+            
+            img.close()
+        
+            # Load the temporary JPEG file for processing
+            img = Image.open(temp_jpeg_file)
+        
+      
+            
         img = transforms.Resize((360,360))(img)
         img = transforms.ToTensor()(img)
         img = img.unsqueeze(0).to(device)
         res=classify(model,img)
+        
+
         lb=labels[res[1]]
         sc=res[0]
         st.write(lb+" "+str(sc))
@@ -358,6 +406,8 @@ def main(opt,model,labels):
 		#final_result = run(weights,file_name)
         #st.image(final_result, caption='Diseases Detected')
         os.remove(file_name) 
+        #Remove the temporary JPEG file after processing
+        os.remove(temp_jpeg_file)
     
 
 
